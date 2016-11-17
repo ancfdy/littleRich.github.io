@@ -4,18 +4,20 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>下载并编译官方Android6.0.0_r1源码(进阶篇) | 许庆富的小黑屋</title>
+  <title>在Ubuntu14.04_X64编译官方Android6_r1源码(完整版) | 许庆富的小黑屋</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="摘要:&amp;emsp;&amp;emsp;本文只用Ubuntu14.04_x64版本编译AOSP上的Android系统源码，废话少说，开始源码的编译之旅吧。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="下载并编译官方Android6.0.0_r1源码(进阶篇)">
+<meta property="og:title" content="在Ubuntu14.04_X64编译官方Android6_r1源码(完整版)">
 <meta property="og:url" content="http://littleRich.github.io/2016/11/05/在Ubuntu-14.04.3X64编译Android6_r1源码/index.html">
 <meta property="og:site_name" content="许庆富的小黑屋">
 <meta property="og:description" content="摘要:&amp;emsp;&amp;emsp;本文只用Ubuntu14.04_x64版本编译AOSP上的Android系统源码，废话少说，开始源码的编译之旅吧。">
-<meta property="og:updated_time" content="2016-11-16T09:29:48.677Z">
+<meta property="og:image" content="http://littleRich.github.io/\images\20161117\downloadsource.png">
+<meta property="og:updated_time" content="2016-11-17T05:33:28.342Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="下载并编译官方Android6.0.0_r1源码(进阶篇)">
+<meta name="twitter:title" content="在Ubuntu14.04_X64编译官方Android6_r1源码(完整版)">
 <meta name="twitter:description" content="摘要:&amp;emsp;&amp;emsp;本文只用Ubuntu14.04_x64版本编译AOSP上的Android系统源码，废话少说，开始源码的编译之旅吧。">
+<meta name="twitter:image" content="http://littleRich.github.io/\images\20161117\downloadsource.png">
   
     <link rel="alternative" href="/atom.xml" title="许庆富的小黑屋" type="application/atom+xml">
   
@@ -153,7 +155,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      下载并编译官方Android6.0.0_r1源码(进阶篇)
+      在Ubuntu14.04_X64编译官方Android6_r1源码(完整版)
     </h1>
   
 
@@ -162,8 +164,20 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>摘要:<br>&emsp;&emsp;本文只用Ubuntu14.04_x64版本编译AOSP上的Android系统源码，废话少说，开始源码的编译之旅吧。<br><a id="more"></a></p>
-<h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><p>&emsp;&emsp;最近群里有些朋友一直问我源码如何下载，又是如何编译、烧录ROM的？其实编译源码并不是什么难事，只要电脑能翻墙，性能够好，再跟着我的文章走一遍，你绝对不会很难了。</p>
-<h3 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h3>
+<h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><p>&emsp;&emsp;最近群里有些朋友一直问我源码如何下载，又是如何编译、烧录ROM的？其实编译源码并不是什么难事，只要电脑能翻墙，性能够好，再跟着我的文章走一遍，你绝对不会很难了。<br>&emsp;&emsp;对于硬件要求，根据我多次编译入坑经历总结如下：<br>1、如果你是虚拟机里下源码编译，那么硬盘就至少70G，总之越大越好（推荐100+G）；<br>2、我这里下的是AOSP的官方源码，所以得能翻墙；<br>3、Ubuntu系统选用14.04，当然最新版的Ubuntu16.04的也能编译，但是会由于make工具过新而导致编译不成功。<br>Android版本 | 编译要求的Ubuntu最低版本<br>—-|——<br>Android 6.0至AOSP master | Ubuntu 14.04<br>Android 2.3.x至Android 5.x | Ubuntu 12.04<br>Android 1.5至Android 2.2.x | Ubuntu 10.04<br>4、对于系统位数选择，Android源码大于2.3.x版本的就需要64位的操作系统，如果你想要编译2.3.x以下的,那么需要32位的操作系统.<br>&emsp;&emsp;Android源码编译的四个流程:1.源码下载;2.构建编译环境;3.编译源码;4运行.下文也将按照该流程讲述.</p>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h3><p>&emsp;&emsp;下载源码需要的工具是Ubuntu + repo即可完成。repo由一系列python脚本组成,通过调用Git命令实现对AOSP项目的管理。当然我们最好在开始前安装Git，便于后序进行，安装的bash指令如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install git </div><div class="line">git config --global user.name <span class="string">"Your Name"</span></div><div class="line">git config --global user.email <span class="string">"you@example.com"</span></div></pre></td></tr></table></figure></p>
+<p>####下载源码</p>
+<p>#####repo工具下载及安装<br>&emsp;&emsp;通过执行以下命令实现repo工具的下载和安装。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mkdir ~/bin</div><div class="line">PATH=~/bin:<span class="variable">$PATH</span></div><div class="line">curl https://storage.googleapis.com/git-repo-downloads/repo &gt; ~/bin/repo</div><div class="line">chmod a+x ~/bin/repo</div></pre></td></tr></table></figure></p>
+<p>指令中“~”代表当前用户的用户目录。  </p>
+<p>#####建立源码文件夹<br>&emsp;&emsp;上面已经说了AOSP是用Git来管理源码的，所以需要为项目在本地创建对应的仓库。这就要为其创建一个文件夹.这里我在当前用户目录下(也就是Home下)创建了AndroidSource文件夹,后面所有的下载的源码和编译出的产物也都放在这里,命令如下:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mkdir <span class="built_in">source</span></div><div class="line"><span class="built_in">cd</span> <span class="built_in">source</span></div></pre></td></tr></table></figure></p>
+<p>在主目录下创建文件有个好处，就是避免一些不必要的权限问题影响后续操作。创建文件前可用pwd指令查看当前所在路径，主目录路径就是home/用户名/</p>
+<p>#####初始化Repo客户端<br>我们将上面的AndroidSource文件夹作为仓库,现在需要来初始化这个仓库了.通过执行初始化仓库命令可以获取AOSP项目master上最新的代码并初始化该仓库,命令如下:<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">repo</span> init -u https://<span class="keyword">android.googlesource.com/platform/manifest </span>-<span class="keyword">b </span><span class="keyword">android-6.0.0_r1</span></div></pre></td></tr></table></figure></p>
+<p>当然如果你要下载其它版本的源码，只需修改-b后面的分支名即可。可以去<a href="http://source.android.com/source/build-numbers.html#source-code-tags-and-builds" title="Android源码官网" target="_blank" rel="external">Android官方网站</a>获取对应的仓库分支名。<br>注：如果执行该命令的过程中,如果提示无法连接到 gerrit.googlesource.com，这是因为你没翻墙网络太差，此时可以考虑到国内的镜像源进行下载(参考:<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/aosp" title="科大镜像地址" target="_blank" rel="external">科大源</a>,<a href="https://mirrors.tuna.tsinghua.edu.cn/help/AOSP/" title="清华镜像地址" target="_blank" rel="external">清华源</a>)。那么我们只需要编辑 ~/bin/repo文件，找到REPO_URL这一行,然后将其内容修改为:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">REPO_URL = <span class="string">'https://gerrit-google.tuna.tsinghua.edu.cn/git-repo'</span></div></pre></td></tr></table></figure></p>
+<p>然后重新执行上述命令即可。</p>
+<p>#####同步源码到本地<br>初始化仓库之后,就可以开始正式同步代码到本地了,命令如下:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">repo sync</div></pre></td></tr></table></figure></p>
+<p>这个过程需要时间比较久，要视翻墙网速而定，一般也得六七个小时才可下完。在同步过程中,如果因为网络原因中断,放心，这个可以断点续传的，使用该命令继续同步即可。以后如果需要同步最新的远程代码到本地,也只需要执行该命令即可。<br>============================ 等了好几个小时后… ==========================<br>&emsp;&emsp;当你看到一个分母是几百多的done了，恭喜你下完源码了，这个不同源码版本分母大小是不一样的。总之，下完源码之后，会自动从本地Git仓库检出源码，可以参照我的进度截图如下：<br><img src="\images\20161117\downloadsource.png" alt="判断源码是否下载完成"><br>注：如果不行的话，就用repo sync指令多同步几次应该就可以了。</p>
+<p>####构建编译环境</p>
+
       
     </div>
     <div class="article-info article-info-index">
@@ -209,7 +223,7 @@
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="在Ubuntu-14.04.3X64编译Android6_r1源码" data-title="下载并编译官方Android6.0.0_r1源码(进阶篇)" data-url="http://littleRich.github.io/2016/11/05/在Ubuntu-14.04.3X64编译Android6_r1源码/"></div>
+	<div class="ds-thread" data-thread-key="在Ubuntu-14.04.3X64编译Android6_r1源码" data-title="在Ubuntu14.04_X64编译官方Android6_r1源码(完整版)" data-url="http://littleRich.github.io/2016/11/05/在Ubuntu-14.04.3X64编译Android6_r1源码/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
