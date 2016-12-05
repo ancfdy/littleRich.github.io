@@ -4,17 +4,18 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>Category: Android Studio导入源码 | 许庆富的小黑屋</title>
+  <title>Android自动化模拟操作开源库源码解析 | 许庆富的小黑屋</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="记录生活点滴">
-<meta property="og:type" content="website">
-<meta property="og:title" content="许庆富的小黑屋">
-<meta property="og:url" content="http://littleRich.github.io/categories/AOSP源码下载/OpenJdk8/VMware-Workstation-Pro-Ubuntu14-04-x64/模块编译/Android-Studio导入源码/index.html">
+  <meta name="description" content="摘要:&amp;emsp;&amp;emsp;今天给大家开源一个很强大的自动化模拟人操作的开源库，基于本开源库你可以深度开发很多好玩的应用，比如网购抢单插件、红包插件、自动安装APP等，更多好玩的应用等你来集成哦。获取开源库包和开发Demo可以到我的GitHub上fork，我的GitHub上有详细的使用介绍，这里就不多说了。如果想要深入探析本开源库的设计思路及数据结构等，那就跟随我一起搅基吧。（本开源库经过我多轮">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android自动化模拟操作开源库源码解析">
+<meta property="og:url" content="http://littleRich.github.io/2016/12/05/Android自动化模拟操作开源库/index.html">
 <meta property="og:site_name" content="许庆富的小黑屋">
-<meta property="og:description" content="记录生活点滴">
+<meta property="og:description" content="摘要:&amp;emsp;&amp;emsp;今天给大家开源一个很强大的自动化模拟人操作的开源库，基于本开源库你可以深度开发很多好玩的应用，比如网购抢单插件、红包插件、自动安装APP等，更多好玩的应用等你来集成哦。获取开源库包和开发Demo可以到我的GitHub上fork，我的GitHub上有详细的使用介绍，这里就不多说了。如果想要深入探析本开源库的设计思路及数据结构等，那就跟随我一起搅基吧。（本开源库经过我多轮">
+<meta property="og:updated_time" content="2016-12-05T02:55:34.026Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="许庆富的小黑屋">
-<meta name="twitter:description" content="记录生活点滴">
+<meta name="twitter:title" content="Android自动化模拟操作开源库源码解析">
+<meta name="twitter:description" content="摘要:&amp;emsp;&amp;emsp;今天给大家开源一个很强大的自动化模拟人操作的开源库，基于本开源库你可以深度开发很多好玩的应用，比如网购抢单插件、红包插件、自动安装APP等，更多好玩的应用等你来集成哦。获取开源库包和开发Demo可以到我的GitHub上fork，我的GitHub上有详细的使用介绍，这里就不多说了。如果想要深入探析本开源库的设计思路及数据结构等，那就跟随我一起搅基吧。（本开源库经过我多轮">
   
     <link rel="alternative" href="/atom.xml" title="许庆富的小黑屋" type="application/atom+xml">
   
@@ -142,59 +143,91 @@
 </nav>
 
       <div class="body-wrap">
+        <article id="post-Android自动化模拟操作开源库" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
         
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/11/05/在Ubuntu-14.04.3X64编译Android6_r1源码/" class="archive-article-date">
-  	<time datetime="2016-11-05T08:45:24.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/11/05/在Ubuntu-14.04.3X64编译Android6_r1源码/">在Ubuntu14.04_X64编译官方Android6.0.0_r1源码(完整版)</a>
+    <h1 class="article-title" itemprop="name">
+      Android自动化模拟操作开源库源码解析
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>摘要:<br>&emsp;&emsp;今天给大家开源一个很强大的自动化模拟人操作的开源库，基于本开源库你可以深度开发很多好玩的应用，比如网购抢单插件、红包插件、自动安装APP等，更多好玩的应用等你来集成哦。获取开源库包和开发Demo可以到我的GitHub上fork，我的GitHub上有详细的使用介绍，这里就不多说了。如果想要深入探析本开源库的设计思路及数据结构等，那就跟随我一起搅基吧。（本开源库经过我多轮测试，目前开源V1.0正式版，使用上如果发现BUG，可以给我留言，谢谢！）<br><a id="more"></a></p>
+<h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><p>&emsp;&emsp;其实我开始接触Git有三大原因，并不是碰到其它版本控制工具的短板而跳到Git来的。第一，由于我毕业之后就一直从事Android研发相关工作，大家都知道Android都是采用Git进行源码管理的，而我要深入研究Android源码这个大坑，就必然需要Git这个强大工具；第二，个人一直热衷于开源精神，GitHub是每个程序员的绝对干货，我也常在上面开源一些好玩的小程序；第三，就冲着Git是Linux之父的第二大作品，那么就有必要去了解了解。  </p>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h3>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/12/05/Android自动化模拟操作开源库/" class="archive-article-date">
+  	<time datetime="2016-12-05T02:16:37.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-12-05</time>
+</a>
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android源码编译/">Android源码编译</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自动化开源库/">自动化开源库</a></li></ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 	<i class="icon-price-tags"></i>
-	<a class="article-category-link" href="/categories/AOSP源码下载/">AOSP源码下载</a><a class="article-category-link" href="/categories/AOSP源码下载/OpenJdk8/">OpenJdk8</a><a class="article-category-link" href="/categories/AOSP源码下载/OpenJdk8/VMware-Workstation-Pro-Ubuntu14-04-x64/">VMware Workstation Pro + Ubuntu14.04_x64</a><a class="article-category-link" href="/categories/AOSP源码下载/OpenJdk8/VMware-Workstation-Pro-Ubuntu14-04-x64/模块编译/">模块编译</a><a class="article-category-link" href="/categories/AOSP源码下载/OpenJdk8/VMware-Workstation-Pro-Ubuntu14-04-x64/模块编译/Android-Studio导入源码/">Android Studio导入源码</a>
+	<a class="article-category-link" href="/categories/开源库设计原理/">开源库设计原理</a><a class="article-category-link" href="/categories/开源库设计原理/抢购插件/">抢购插件</a><a class="article-category-link" href="/categories/开源库设计原理/抢购插件/AccessibilityService/">AccessibilityService</a><a class="article-category-link" href="/categories/开源库设计原理/抢购插件/AccessibilityService/树结构/">树结构</a><a class="article-category-link" href="/categories/开源库设计原理/抢购插件/AccessibilityService/树结构/虚拟定位/">虚拟定位</a>
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-  
-    </div></section>
-  
 
-    
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2016/11/05/在Ubuntu-14.04.3X64编译Android6_r1源码/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">在Ubuntu14.04_X64编译官方Android6.0.0_r1源码(完整版)</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Android自动化模拟操作开源库" data-title="Android自动化模拟操作开源库源码解析" data-url="http://littleRich.github.io/2016/12/05/Android自动化模拟操作开源库/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"littlerich"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
 
 
       </div>
@@ -218,10 +251,10 @@
 		mathjax: false,
 		animate: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: false,
 		root: "/",
 		innerArchive: true
