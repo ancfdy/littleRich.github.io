@@ -12,7 +12,7 @@
 <meta property="og:url" content="http://littleRich.github.io/2016/12/05/Android自动化模拟操作开源库/index.html">
 <meta property="og:site_name" content="许庆富的小黑屋">
 <meta property="og:description" content="摘要:&amp;emsp;&amp;emsp;今天给大家开源一个很强大的自动化模拟人交互的开源库，基于本开源库你可以深度开发很多好玩的应用，比如常见的网购抢单插件、红包插件、自动安装APP等，更多好玩的应用等你来集成哦。获取开源库包和开发Demo可以到我的GitHub上fork，我的GitHub上有详细的使用介绍，这里就不多说了。如果想要深入探析本开源库的设计思路及数据结构等，那就跟随我一起搅基吧。（本开源库经过">
-<meta property="og:updated_time" content="2016-12-05T03:02:52.189Z">
+<meta property="og:updated_time" content="2016-12-05T03:30:10.194Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android自动化模拟操作开源库源码解析">
 <meta name="twitter:description" content="摘要:&amp;emsp;&amp;emsp;今天给大家开源一个很强大的自动化模拟人交互的开源库，基于本开源库你可以深度开发很多好玩的应用，比如常见的网购抢单插件、红包插件、自动安装APP等，更多好玩的应用等你来集成哦。获取开源库包和开发Demo可以到我的GitHub上fork，我的GitHub上有详细的使用介绍，这里就不多说了。如果想要深入探析本开源库的设计思路及数据结构等，那就跟随我一起搅基吧。（本开源库经过">
@@ -161,8 +161,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>摘要:<br>&emsp;&emsp;今天给大家开源一个很强大的自动化模拟人交互的开源库，基于本开源库你可以深度开发很多好玩的应用，比如常见的网购抢单插件、红包插件、自动安装APP等，更多好玩的应用等你来集成哦。获取开源库包和开发Demo可以到我的GitHub上fork，我的GitHub上有详细的使用介绍，这里就不多说了。如果想要深入探析本开源库的设计思路及数据结构等，那就跟随我一起搅基吧。（本开源库经过我多轮测试，目前开源V1.0正式版，使用上如果发现BUG，可以给我留言，多谢支持！）<br><a id="more"></a></p>
-<h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><p>&emsp;&emsp;其实我开始接触Git有三大原因，并不是碰到其它版本控制工具的短板而跳到Git来的。第一，由于我毕业之后就一直从事Android研发相关工作，大家都知道Android都是采用Git进行源码管理的，而我要深入研究Android源码这个大坑，就必然需要Git这个强大工具；第二，个人一直热衷于开源精神，GitHub是每个程序员的绝对干货，我也常在上面开源一些好玩的小程序；第三，就冲着Git是Linux之父的第二大作品，那么就有必要去了解了解。  </p>
+        <p>摘要:<br>&emsp;&emsp;今天给大家开源一个很强大的自动化模拟人交互的开源库，基于本开源库你可以深度开发很多好玩的应用，比如常见的网购抢单插件、红包插件、自动安装APP等，更多好玩的应用等你来集成哦。获取开源库包和开发Demo可以到我的GitHub上fork，我的GitHub上有详细的使用介绍，这里就不多说了。如果想要深入探析本开源库的设计思路及数据结构等，那就跟随我一起搅基吧。（本开源库经过我多轮测试，目前开源V1.0.3正式版，使用上如果发现BUG，可以给我留言，多谢支持！）<br><a id="more"></a></p>
+<h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><p>&emsp;&emsp;从今年三月份时就开始着手研究基于Android上的自动化程序，由于现在陷入这个坑的人还不是很多感觉，Android官方也只提供了AccessibilityService的辅助工具API，但使用上并不能完美满足开发的需要，当然目前也有很多采用这个API的开发，比如抢红包插件什么的。为了追求更便捷稳定的开发，我重新设计了一个基于AccessibilityService的自动化交互的API。<br>&emsp;&emsp;类库中还集成了一个很实用的虚拟定位功能，涉及到自动化操作，如果要操作基于LBS类的APP，那么就有必要实用虚拟定位功能，这样才能模拟操作各个地理位置的数据，具体细节进一步看正文吧。</p>
 <h3 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h3>
       
     </div>
