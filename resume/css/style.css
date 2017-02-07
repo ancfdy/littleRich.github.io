@@ -390,7 +390,7 @@ address {
 .content {
   margin-right: 2em;
 }
-.glyphicon-save:before, .glyphicon-print:before, .glyphicon-envelope:before, .glyphicon-picture:before {
+.glyphicon-save:before, .glyphicon-star-empty:before, .glyphicon-envelope:before, .glyphicon-picture:before {
   margin-right: 6px;
   font-size: 12px;
 }
