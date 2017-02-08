@@ -231,13 +231,11 @@ h3.clr3{
 .contact-grid textarea {
   resize: none;
 }
-.map{
-	padding:2em 0 0 2em;
-}
-.map iframe {
+.map {
   width: 100%;
   height: 350px;
-  border: none;
+  /*padding:2em 0 0 2em;*/
+  margin: 30px;
 }
 /*--responsive--*/
 @media (max-width: 1366px){
@@ -413,8 +411,11 @@ address {
 .copywrite{
 	padding-left:1em;
 }
-.map iframe {
-  height: 246px;
+.map{
+  height: 20px;
+  padding-right: 6px;
+  margig: 60px;
+  width: 200px;
 }
 }
 @media (max-width: 414px){
