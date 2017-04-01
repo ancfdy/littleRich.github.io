@@ -6,16 +6,18 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <title>Android安全：Smali从入门到疯狂 | 许庆富的小黑屋</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="摘要:&amp;emsp;&amp;emsp;对于从事Android安全工程师职业来说，熟悉Smali是基本技能。然而，目前市面上却没有专门一门系统讲解Smali语法及实战的书籍教程，所以觉得有必要连载几篇关于Android逆向分析之Smali语法讲解及实战教程。有什么笔误的地方还望指正，欢迎搅基！APKTool反编译">
+  <meta name="description" content="摘要:&amp;emsp;&amp;emsp;对于从事Android安全工程师职业来说，熟悉Smali是基本技能。然而，目前市面上却没有专门一门系统讲解Smali语法及实战的书籍教程，所以觉得有必要连载几篇关于Android逆向分析之Smali语法讲解及实战教程。有什么笔误的地方还望指正，欢迎搅基！">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android安全：Smali从入门到疯狂">
 <meta property="og:url" content="http://littleRich.github.io/2017/04/01/Android安全：Smali从入门到疯狂/index.html">
 <meta property="og:site_name" content="许庆富的小黑屋">
-<meta property="og:description" content="摘要:&amp;emsp;&amp;emsp;对于从事Android安全工程师职业来说，熟悉Smali是基本技能。然而，目前市面上却没有专门一门系统讲解Smali语法及实战的书籍教程，所以觉得有必要连载几篇关于Android逆向分析之Smali语法讲解及实战教程。有什么笔误的地方还望指正，欢迎搅基！APKTool反编译">
-<meta property="og:updated_time" content="2017-04-01T09:25:08.329Z">
+<meta property="og:description" content="摘要:&amp;emsp;&amp;emsp;对于从事Android安全工程师职业来说，熟悉Smali是基本技能。然而，目前市面上却没有专门一门系统讲解Smali语法及实战的书籍教程，所以觉得有必要连载几篇关于Android逆向分析之Smali语法讲解及实战教程。有什么笔误的地方还望指正，欢迎搅基！">
+<meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170401/decodeSmali.png">
+<meta property="og:updated_time" content="2017-04-01T09:26:29.921Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android安全：Smali从入门到疯狂">
-<meta name="twitter:description" content="摘要:&amp;emsp;&amp;emsp;对于从事Android安全工程师职业来说，熟悉Smali是基本技能。然而，目前市面上却没有专门一门系统讲解Smali语法及实战的书籍教程，所以觉得有必要连载几篇关于Android逆向分析之Smali语法讲解及实战教程。有什么笔误的地方还望指正，欢迎搅基！APKTool反编译">
+<meta name="twitter:description" content="摘要:&amp;emsp;&amp;emsp;对于从事Android安全工程师职业来说，熟悉Smali是基本技能。然而，目前市面上却没有专门一门系统讲解Smali语法及实战的书籍教程，所以觉得有必要连载几篇关于Android逆向分析之Smali语法讲解及实战教程。有什么笔误的地方还望指正，欢迎搅基！">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170401/decodeSmali.png">
   
     <link rel="alternative" href="/atom.xml" title="许庆富的小黑屋" type="application/atom+xml">
   
@@ -165,7 +167,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>摘要:<br>&emsp;&emsp;对于从事Android安全工程师职业来说，熟悉Smali是基本技能。然而，目前市面上却没有专门一门系统讲解Smali语法及实战的书籍教程，所以觉得有必要连载几篇关于Android逆向分析之Smali语法讲解及实战教程。有什么笔误的地方还望指正，欢迎搅基！<br><a href="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170401/decodeSmali.png" target="_blank" rel="external">APKTool反编译</a><br><a id="more"></a></p>
+        <p>摘要:<br>&emsp;&emsp;对于从事Android安全工程师职业来说，熟悉Smali是基本技能。然而，目前市面上却没有专门一门系统讲解Smali语法及实战的书籍教程，所以觉得有必要连载几篇关于Android逆向分析之Smali语法讲解及实战教程。有什么笔误的地方还望指正，欢迎搅基！<br><img src="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170401/decodeSmali.png" alt="APKTool反编译"><br><a id="more"></a></p>
 <h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><p>&emsp;&emsp;先来说说怎么拿到Smali代码，对于初学者来说，可以使用APKTool工具来反编译APK，即可将DEX反编译成Smali中间文件。命令如下：<br><figure class="highlight dos"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//xxx.apk就是在E:/apktool目录下欲反编译的apk文件</div><div class="line">apktool d xxx.apk</div><div class="line">  </div><div class="line">//回编译命令[二次打包]。xxx就是反编译后的文件所在文件夹，这个文件夹一般是以之前反编译的文件名为名称  </div><div class="line">apktool b xxx</div></pre></td></tr></table></figure></p>
 <p>但是每次都这样反编译也挺麻烦的，这里给大家推荐几个工具及在线反编译网站：<br>1、JEB<br>2、APK改之理<br>3、在线反编译站点：<a href="http://www.javadecompilers.com/apk" title="在线反编译站点" target="_blank" rel="external">Android Apk decompiler</a><br>注：文中涉及到的工具可以百度上下，也可以私信我分享。</p>
 <h3 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h3><p>&emsp;&emsp;</p>
