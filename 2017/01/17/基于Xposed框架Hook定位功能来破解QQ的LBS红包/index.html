@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/images/20170117/location_beijing.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/images/20170117/location_hangzhou.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/images/20170117/location_chengdu.png">
-<meta property="og:updated_time" content="2017-01-22T05:01:19.597Z">
+<meta property="og:updated_time" content="2017-04-15T03:15:29.608Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于Xposed框架Hook定位功能来破解QQ的LBS红包">
 <meta name="twitter:description" content="摘要:&amp;emsp;&amp;emsp;今年的LBS+AR红包无疑是过年的一大热点。刚好最近在研究利用Xposed框架Hook抢群红包的外挂，就试试利用Hook技术来实现虚拟定位，这样就可以随意到处寻找AR红包了。QQ上基于LBS的红包不需要实物扫描，这个与支付宝的LBS红包策略不一样，所以只需要定位到红包地点即可领取。其实支付宝刚出来扫描红包时是可以用PS破解的，现在支付宝这个BUG已经被修复了。下面三张">
@@ -184,6 +184,7 @@
 <p>这个只是Hook系统的GPS定位返回的经纬度，相应的可以Hook系统的基站定位、WIFI定位和AGPS定位模块代码，这里我给出这些要Hook位置的类：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">android.telephony.TelephonyManager</div><div class="line">android.telephony.PhoneStateListener</div><div class="line">android.net.wifi.WifiManager</div><div class="line">android.net.wifi.WifiInfo</div><div class="line">android.net.NetworkInfo</div><div class="line">android.telephony.CellInfo</div><div class="line">LocationManager.class</div><div class="line">android.location.LocationManager</div></pre></td></tr></table></figure></p>
 <p>只要知道定位的实现代码，就可以Hook修改定位的返回值，跟上面Hook修改GPS定位的类似，就不粘代码了，省的贴太多代码不好看，不懂的可以跟我要源码一起探讨探讨。  </p>
 <p>安装包下载：<a href="https://github.com/littleRich/littleRich.github.io/blob/images/20170117/hooklocation-debug.apk" target="_blank" rel="external">抢LBS红包.apk</a></p>
+<p>下面推荐几篇分析Xposed的不错文章：<br>Xposed (一) Android hook框架入门<a href="https://my.oschina.net/wisedream/blog/471292" title="Xposed框架使用入门" target="_blank" rel="external">https://my.oschina.net/wisedream/blog/471292</a></p>
 
       
     </div>
