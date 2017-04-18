@@ -14,7 +14,7 @@
 <meta property="og:description" content="摘要:&amp;emsp;&amp;emsp;对于从事Android安全工程师职业来说，熟悉Smali是基本技能，这样就可以修改Smali代码来逆向分析破解APP程序，又或者二次打包发布【当然这样做不是很好】。然而，目前市面上却没有专门一门系统讲解Smali语法及实战的书籍教程，所以觉得有必要连载几篇关于Android逆向分析之Smali语法讲解及实战教程。有什么笔误的地方还望指正，欢迎搅基！">
 <meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170401/smalidemo.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170401/decodeSmali.png">
-<meta property="og:updated_time" content="2017-04-12T09:23:03.920Z">
+<meta property="og:updated_time" content="2017-04-18T03:29:18.878Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android安全：Smali从入门到疯狂">
 <meta name="twitter:description" content="摘要:&amp;emsp;&amp;emsp;对于从事Android安全工程师职业来说，熟悉Smali是基本技能，这样就可以修改Smali代码来逆向分析破解APP程序，又或者二次打包发布【当然这样做不是很好】。然而，目前市面上却没有专门一门系统讲解Smali语法及实战的书籍教程，所以觉得有必要连载几篇关于Android逆向分析之Smali语法讲解及实战教程。有什么笔误的地方还望指正，欢迎搅基！">
@@ -172,7 +172,40 @@
 <h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><p>&emsp;&emsp;先来说说怎么拿到Smali代码，对于初学者来说，可以使用APKTool工具来反编译APK，即可将DEX反编译成Smali中间文件。命令如下：<br><figure class="highlight dos"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//xxx.apk就是在E:/apktool目录下欲反编译的apk文件</div><div class="line">apktool d xxx.apk</div><div class="line">  </div><div class="line">//回编译命令[二次打包]。xxx就是反编译后的文件所在文件夹，这个文件夹一般是以之前反编译的文件名为名称  </div><div class="line">apktool b xxx</div></pre></td></tr></table></figure></p>
 <p>但是每次都这样反编译也挺麻烦的，这里给大家推荐几个工具及在线反编译网站，用于反编译apk包，得到smali代码：<br>1、JEB<br>2、APK改之理<br>3、android killer<br>4、在线反编译站点：<a href="http://www.javadecompilers.com/apk" title="在线反编译站点" target="_blank" rel="external">Android Apk decompiler</a><br>注：文中涉及到的工具可以百度上下，也可以私信我分享。<br><img src="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170401/decodeSmali.png" alt="APKTool反编译"><br>其中android下存放所调用库的smali文件，com才是我们自己写的代码的smali文件。</p>
 <h3 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h3><p>&emsp;&emsp;对比Java和smali代码，可能对smali的第一印象有点懵逼，原来只有几行的代码反编译成smali，代码量大大扩充了。smali还原了Java隐藏的代码，同时显示地指定了很多代码细节，当然IDE很多时候也帮我们省了很多重复代码。所以反编译一个成熟的APK，smali代码量应该是很大的，可能有些复杂，但其实smali语法并不难。不信的话，咱们先来反编译一下编程之路上的第一个程序HelloWorld，翻译一下smali代码。</p>
+<pre><code>.class public Ltop/littlerich/smalisyntax/MainActivity; #类名
+.super Landroid/support/v7/app/AppCompatActivity; #父类名
+.source &quot;MainActivity.java&quot; #源文件名
 
+# direct methods
+.method public constructor &lt;init&gt;()V #.method与.end method对应源码中的{}，包含了方法的实现代码段
+    .locals 0 #指明了这个方法用到的寄存器数量，当然寄存器可以重复利用，从V0起算
+
+    .prologue #标记代码开始处
+       .line 6 #标识这是在Java源码中的第几行
+    invoke-direct {p0}, Landroid/support/v7/app/AppCompatActivity;-&gt;&lt;init&gt;()V #对方法的调用，这里调用了Android.app.Activity的init方法
+
+    return-void #该方法的返回值类型
+.end method
+
+
+# virtual methods
+.method protected onCreate(Landroid/os/Bundle;)V
+    .locals 1 #指明了这个方法用到的寄存器数量，当然寄存器可以重复利用，从V0起算
+    .param p1, &quot;savedInstanceState&quot;    # Landroid/os/Bundle; .param指明了参数名
+
+    .prologue
+    .line 10 # p0代表this，p1开始代表函数参数，静态函数没有this，所以从p0开始就代表参数
+    invoke-super {p0, p1}, Landroid/support/v7/app/AppCompatActivity;-&gt;onCreate(Landroid/os/Bundle;)V
+
+    .line 11 # 把值赋给寄存器v0，然后调用使用传递进去的值，所有的值必须通过寄存器来中转（这个很汇编类似）
+    const v0, 0x7f04001b
+
+    invoke-virtual {p0, v0}, Ltop/littlerich/smalisyntax/MainActivity;-&gt;setContentView(I)V #调用setContentView(I)
+
+    .line 12
+    return-void
+.end method
+</code></pre>
       
     </div>
     <div class="article-info article-info-index">
