@@ -14,7 +14,7 @@
 <meta property="og:description" content="摘要:&amp;emsp;&amp;emsp;对于从事Android安全工程师职业来说，熟悉Smali是基本技能，这样就可以修改Smali代码来逆向分析破解APP程序，又或者二次打包发布【当然这样做不是很好】。然而，目前市面上却没有专门一门系统讲解Smali语法及实战的书籍教程，所以觉得有必要连载几篇关于Android逆向分析之Smali语法讲解及实战教程。有什么笔误的地方还望指正，欢迎搅基！">
 <meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170401/smalidemo.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170401/decodeSmali.png">
-<meta property="og:updated_time" content="2017-04-18T06:28:53.729Z">
+<meta property="og:updated_time" content="2017-04-18T09:33:30.889Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android安全：Smali从入门到疯狂">
 <meta name="twitter:description" content="摘要:&amp;emsp;&amp;emsp;对于从事Android安全工程师职业来说，熟悉Smali是基本技能，这样就可以修改Smali代码来逆向分析破解APP程序，又或者二次打包发布【当然这样做不是很好】。然而，目前市面上却没有专门一门系统讲解Smali语法及实战的书籍教程，所以觉得有必要连载几篇关于Android逆向分析之Smali语法讲解及实战教程。有什么笔误的地方还望指正，欢迎搅基！">
@@ -205,8 +205,18 @@
     .line 12
     return-void
 .end method
-</code></pre><p>一个新建的Activity代码就如上所示，具体如何读smali代码，上面注释写的很清楚了，注意在smali中注释是用#打头。<br>通过上面一个小Demo，可以发现smali还是很简单吧。下面我再系统的归纳smali各个模块的代码。<br>java中的数据类型在smali中的表示符号：<br>    void———&gt;V<br>    boolean——&gt;Z<br>    byte———&gt;B<br>    short——–&gt;S<br>    char———&gt;C<br>    int———-&gt;I<br>    long———&gt;J<br>    float——–&gt;F<br>    double——-&gt;D<br>    对象———-&gt;L<br>    数组———-&gt;[                      </p>
-<p>另外还有个注意点：Android是基于寄存器存储的，一个寄存器占32位，java中long和double占8个字节，每一字节占8位，所以要用2个寄存器存储。<br>在上面的小Demo里还发现，smali里是没有大括号圈中代码块，但它也不像Python通过相同的空格来标识同一个代码块，smali是通过.XXX来标识的语法，这一点有点类似汇编的语法。这里也给整理了下：<br>.field 　定义变量</p>
+</code></pre><p>一个新建的Activity代码就如上所示，具体如何读smali代码，上面注释写的很清楚了，注意在smali中注释是用#打头。<br>通过上面一个小Demo，可以发现smali还是很简单吧。下面我再系统的归纳smali各个模块的代码。<br>java中的数据类型在smali中的表示符号：Java smali<br>void        V  </p>
+<p>boolean        Z  </p>
+<p>byte        B    </p>
+<p>short        S     </p>
+<p>char        C     </p>
+<p>int            I      </p>
+<p>long        J     </p>
+<p>float        F    </p>
+<p>double        D  </p>
+<p>对象            L  </p>
+<p>数组            [                      </p>
+<p>dalvik字节码有两种类型，原始类型和引用类型。对象和数组是引用类型，其它都是原始类型。而且很多是通过Java中类型的首字母表示，最后面两个是引用类型，对象以Lpackage/name/ObjectName;的形式表示，前面的L表示这是一个对象类型，package/name/是该对象所在的包，ObjectName是对象的名字，“;”表示对象名称的结束。<br>例如：Ljava/lang/String;相当于java.lang.String所声明的对象<br>再来说说引用类型的数组表示，[I——表示一个整型一维数组，相当于java中的int[]。对于多维数组，只要增加[就行了。[[I相当于int[][]，[[[I相当于int[][][]。注意每一维的最多255个。另外对象数组的表示，[Ljava/lang/String;表示一个String对象数组。<br>另外还有个注意点：Android是基于寄存器存储的，一个寄存器占32位，java中long和double占8个字节，每一字节占8位，所以要用2个寄存器存储。<br>在上面的小Demo里还发现，smali里是没有大括号圈中代码块，但它也不像Python通过相同的空格来标识同一个代码块，smali是通过.XXX来标识的语法，这一点有点类似汇编的语法。这里也给整理了下：<br>.field 　定义变量</p>
 <p>.method　　方法</p>
 <p>.parameter　　方法参数</p>
 <p>.prologue　　方法开始</p>
@@ -219,7 +229,29 @@
 <p>new-instance　　创建实例</p>
 <p>iput-object　　对象赋值</p>
 <p>iget-object　　调用对象</p>
-<p>invoke-static　　调用静态函数  </p>
+<p>invoke-static　　调用静态函数<br>smali的跳转语句：<br>    “if-eq vA, vB, :cond<em>**” 如果vA等于vB则跳转到:cond</em>**</p>
+<pre><code>“if-ne vA, vB, :cond_**” 如果vA不等于vB则跳转到:cond_**
+
+“if-lt vA, vB, :cond_**” 如果vA小于vB则跳转到:cond_**
+
+“if-ge vA, vB, :cond_**” 如果vA大于等于vB则跳转到:cond_**
+
+“if-gt vA, vB, :cond_**” 如果vA大于vB则跳转到:cond_**
+
+“if-le vA, vB, :cond_**” 如果vA小于等于vB则跳转到:cond_**
+
+“if-eqz vA, :cond_**” 如果vA等于0则跳转到:cond_**
+
+“if-nez vA, :cond_**” 如果vA不等于0则跳转到:cond_**
+
+“if-ltz vA, :cond_**” 如果vA小于0则跳转到:cond_**
+
+“if-gez vA, :cond_**” 如果vA大于等于0则跳转到:cond_**
+
+“if-gtz vA, :cond_**” 如果vA大于0则跳转到:cond_**
+
+“if-lez vA, :cond_**” 如果vA小于等于0则跳转到:cond_**
+</code></pre><p>如果觉得看的还不够爽，再推荐几篇不错的文章：<br><a href="https://liuzhichao.com/p/912.html" target="_blank" rel="external">https://liuzhichao.com/p/912.html</a></p>
 
       
     </div>
