@@ -14,7 +14,7 @@
 <meta property="og:description" content="摘要:&amp;emsp;&amp;emsp;对于从事Android安全工程师职业来说，熟悉Smali是基本技能，这样就可以修改Smali代码来逆向分析破解APP程序，又或者二次打包发布【当然这样做不是很好】。然而，目前市面上却没有专门一门系统讲解Smali语法及实战的书籍教程，所以觉得有必要连载几篇关于Android逆向分析之Smali语法讲解及实战教程。有什么笔误的地方还望指正，欢迎搅基！">
 <meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170401/smalidemo.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170401/decodeSmali.png">
-<meta property="og:updated_time" content="2017-04-19T02:41:50.411Z">
+<meta property="og:updated_time" content="2017-04-19T04:33:08.910Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android安全：Smali从入门到疯狂">
 <meta name="twitter:description" content="摘要:&amp;emsp;&amp;emsp;对于从事Android安全工程师职业来说，熟悉Smali是基本技能，这样就可以修改Smali代码来逆向分析破解APP程序，又或者二次打包发布【当然这样做不是很好】。然而，目前市面上却没有专门一门系统讲解Smali语法及实战的书籍教程，所以觉得有必要连载几篇关于Android逆向分析之Smali语法讲解及实战教程。有什么笔误的地方还望指正，欢迎搅基！">
@@ -236,7 +236,7 @@
 <li>parent:  invoke-super<br># eg.<br>invoke-super {p0, p1}, Landroid/support/v7/app/AppCompatActivity;-&gt;onCreate(Landroid/os/Bundle;)V<br>&lt;=对应源码=&gt;<br>super.onCreate(savedInstanceState);  // 其中p0是this，其父类是AppCompatActivity，p1,是savedInstanceState</li>
 </ul>
 <hr>
-<p>小结：通过上面对smali的一些基本语法分析，暂时还没涉及到程序内的逻辑代码语法。smali里是没有大括号圈中代码块，但它也不像Python通过相同的空格来标识同一个代码块，smali是通过.XXX来标识的语法，这一点有点类似汇编的语法。总结上面说到的几个比较重要的标签：<br>.field 　定义变量</p>
+<p>小结：通过上面对smali的一些基本语法分析，暂时还没涉及到程序内的逻辑代码语法。初印象smali里是没有大括号圈中代码块，但它也不像Python通过相同的空格来标识同一个代码块，smali是通过.XXX来标识的语法，这一点有点类似汇编的语法。总结上面说到的几个比较重要的标签：<br>.field 　定义变量</p>
 <p>.method　　方法</p>
 <p>.parameter　　方法参数</p>
 <p>.prologue　　方法开始</p>
@@ -251,8 +251,10 @@
 <p>iget-object　　调用对象</p>
 <p>invoke-static　　调用静态函数  </p>
 <hr>
-<p>smali的跳转语句：<br>    “if-eq vA, vB, :cond<em>**” 如果vA等于vB则跳转到:cond</em>**</p>
-<pre><code>“if-ne vA, vB, :cond_**” 如果vA不等于vB则跳转到:cond_**
+<p>以下介绍smali中逻辑代码部分，不用说这部分肯定很重要的啦，不然怎么逆向分析破解[坏笑]。<br>1、判断语句：    </p>
+<pre><code>“if-eq vA, vB, :cond_**” 如果vA等于vB则跳转到:cond_**
+
+“if-ne vA, vB, :cond_**” 如果vA不等于vB则跳转到:cond_**
 
 “if-lt vA, vB, :cond_**” 如果vA小于vB则跳转到:cond_**
 
@@ -273,6 +275,58 @@
 “if-gtz vA, :cond_**” 如果vA大于0则跳转到:cond_**
 
 “if-lez vA, :cond_**” 如果vA小于等于0则跳转到:cond_**
+</code></pre><p># eg.<br>贴个Java逻辑判断代码的栗子：  </p>
+<pre><code>public boolean matchSize(int a, int b) {
+    if (a &gt; b) {
+        return true;
+    }
+    if (a &gt; 0) {
+        return false;
+    }
+    if (b &lt;= 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+</code></pre><p>对应的smali代码：  </p>
+<pre><code># virtual methods
+.method public matchSize(II)Z
+    .registers 5
+    .param p1, &quot;a&quot;    # I
+    .param p2, &quot;b&quot;    # I
+
+       .prologue
+    const/4 v0, 0x1
+
+    const/4 v1, 0x0
+
+    .line 11
+    if-le p1, p2, :cond_5
+
+    .line 20
+    :cond_4
+    :goto_4
+    return v0
+
+    .line 14
+    :cond_5
+    if-lez p1, :cond_9
+
+    move v0, v1
+
+    .line 15
+    goto :goto_4
+
+    .line 17
+    :cond_9
+    if-lez p2, :cond_4
+
+    move v0, v1
+
+    .line 20
+    goto :goto_4
+.end method
 </code></pre><p>如果觉得看的还不够爽，再推荐几篇不错的文章：<br><a href="https://liuzhichao.com/p/912.html" target="_blank" rel="external">https://liuzhichao.com/p/912.html</a></p>
 
       
