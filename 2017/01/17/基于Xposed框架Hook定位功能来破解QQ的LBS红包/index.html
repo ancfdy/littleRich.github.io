@@ -12,15 +12,15 @@
 <meta property="og:url" content="http://littleRich.github.io/2017/01/17/基于Xposed框架Hook定位功能来破解QQ的LBS红包/index.html">
 <meta property="og:site_name" content="许庆富的小黑屋">
 <meta property="og:description" content="摘要:&amp;emsp;&amp;emsp;今年的LBS+AR红包无疑是过年的一大热点。刚好最近在研究利用Xposed框架Hook抢群红包的外挂，就试试利用Hook技术来实现虚拟定位，这样就可以随意到处寻找AR红包了。QQ上基于LBS的红包不需要实物扫描，这个与支付宝的LBS红包策略不一样，所以只需要定位到红包地点即可领取。其实支付宝刚出来扫描红包时是可以用PS破解的，现在支付宝这个BUG已经被修复了。下面三张">
-<meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/images/20170117/location_beijing.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/images/20170117/location_hangzhou.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/images/20170117/location_chengdu.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170117/location_beijing.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170117/location_hangzhou.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170117/location_chengdu.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170117/multi_dex.png">
-<meta property="og:updated_time" content="2017-04-27T11:19:15.728Z">
+<meta property="og:updated_time" content="2017-04-27T11:24:38.429Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于Xposed框架Hook定位功能来破解QQ的LBS红包">
 <meta name="twitter:description" content="摘要:&amp;emsp;&amp;emsp;今年的LBS+AR红包无疑是过年的一大热点。刚好最近在研究利用Xposed框架Hook抢群红包的外挂，就试试利用Hook技术来实现虚拟定位，这样就可以随意到处寻找AR红包了。QQ上基于LBS的红包不需要实物扫描，这个与支付宝的LBS红包策略不一样，所以只需要定位到红包地点即可领取。其实支付宝刚出来扫描红包时是可以用PS破解的，现在支付宝这个BUG已经被修复了。下面三张">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/images/20170117/location_beijing.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170117/location_beijing.png">
   
     <link rel="alternative" href="/atom.xml" title="许庆富的小黑屋" type="application/atom+xml">
   
@@ -170,7 +170,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>摘要:<br>&emsp;&emsp;今年的LBS+AR红包无疑是过年的一大热点。刚好最近在研究利用Xposed框架Hook抢群红包的外挂，就试试利用Hook技术来实现虚拟定位，这样就可以随意到处寻找AR红包了。QQ上基于LBS的红包不需要实物扫描，这个与支付宝的LBS红包策略不一样，所以只需要定位到红包地点即可领取。其实支付宝刚出来扫描红包时是可以用PS破解的，现在支付宝这个BUG已经被修复了。下面三张截图就是Hook定位QQ程序分别定位北京、杭州、成都，是不是很有意思。<br><img src="https://raw.githubusercontent.com/littleRich/littleRich.github.io/images/20170117/location_beijing.png" alt="北京定位"> <img src="https://raw.githubusercontent.com/littleRich/littleRich.github.io/images/20170117/location_hangzhou.png" alt="杭州定位"> <img src="https://raw.githubusercontent.com/littleRich/littleRich.github.io/images/20170117/location_chengdu.png" alt="成都定位"><br><a id="more"></a></p>
+        <p>摘要:<br>&emsp;&emsp;今年的LBS+AR红包无疑是过年的一大热点。刚好最近在研究利用Xposed框架Hook抢群红包的外挂，就试试利用Hook技术来实现虚拟定位，这样就可以随意到处寻找AR红包了。QQ上基于LBS的红包不需要实物扫描，这个与支付宝的LBS红包策略不一样，所以只需要定位到红包地点即可领取。其实支付宝刚出来扫描红包时是可以用PS破解的，现在支付宝这个BUG已经被修复了。下面三张截图就是Hook定位QQ程序分别定位北京、杭州、成都，是不是很有意思。<br><img src="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170117/location_beijing.png" alt="北京定位"> <img src="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170117/location_hangzhou.png" alt="杭州定位"> <img src="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170117/location_chengdu.png" alt="成都定位"><br><a id="more"></a></p>
 <h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><p>&emsp;&emsp;最先开始打算用Android设备上的开发者选项里的虚拟定位功能，但经过测试这个已被QQ微信检测过滤掉了，并不能欺骗QQ微信定位到我们设定的位置。所以就通过Hook系统定位模块，还加上反编译QQ，Hook了QQ特定的基于基站定位的代码。<br>下面给出Xposed相关的网址，相信对你使用Xposed插件开发肯定有用，也有利于理解Android上Hook的实现原理。<br>xposed官网：<a href="http://repo.xposed.info/" target="_blank" rel="external">http://repo.xposed.info/</a><br>xposed javadoc地址：<a href="http://api.xposed.info" target="_blank" rel="external">http://api.xposed.info</a><br>xda论坛的xposed版块：<a href="http://forum.xda-developers.com/xposed" target="_blank" rel="external">http://forum.xda-developers.com/xposed</a><br>XposedBridgeApi地址：<a href="https://jcenter.bintray.com/de/robv/android/xposed/api/" target="_blank" rel="external">https://jcenter.bintray.com/de/robv/android/xposed/api/</a><br>&emsp;&emsp;注：其实最初是我女朋友问我能不能实现这个功能，所以打算集成百度地图获取经纬度，省的手动输入经纬度，便于使用。</p>
 <hr>
 <h3 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h3><p>要实现Hook虚拟定位，得要先知道定位功能的实现原理，再进一步会正常定位功能的代码实现，接着就可以针对定位代码进行Hook修改定位返回的经纬度值。下面我也是按照这个顺序分析本程序的实现，写的不清楚的地方可以给我留言，探讨探讨。</p>
