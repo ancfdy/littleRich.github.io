@@ -6,21 +6,21 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <title>基于Xposed框架Hook定位功能来破解QQ的LBS红包 | 许庆富的小黑屋</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="摘要:&amp;emsp;&amp;emsp;今年的LBS+AR红包无疑是过年的一大热点。刚好最近在研究利用Xposed框架Hook抢群红包的外挂，就试试利用Hook技术来实现虚拟定位，这样就可以随意到处寻找AR红包了。QQ上基于LBS的红包不需要实物扫描，这个与支付宝的LBS红包策略不一样，所以只需要定位到红包地点即可领取。其实支付宝刚出来扫描红包时是可以用PS破解的，现在支付宝这个BUG已经被修复了。下面三张">
+  <meta name="description" content="本文首发于 http://littleRich.top，原文地址：http://littlerich.top/2017/01/17/%E5%9F%BA%E4%BA%8EXposed%E6%A1%86%E6%9E%B6Hook%E5%AE%9A%E4%BD%8D%E5%8A%9F%E8%83%BD%E6%9D%A5%E7%A0%B4%E8%A7%A3QQ%E7%9A%84LBS%E7%BA%A2%E">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于Xposed框架Hook定位功能来破解QQ的LBS红包">
 <meta property="og:url" content="http://littleRich.github.io/2017/01/17/基于Xposed框架Hook定位功能来破解QQ的LBS红包/index.html">
 <meta property="og:site_name" content="许庆富的小黑屋">
-<meta property="og:description" content="摘要:&amp;emsp;&amp;emsp;今年的LBS+AR红包无疑是过年的一大热点。刚好最近在研究利用Xposed框架Hook抢群红包的外挂，就试试利用Hook技术来实现虚拟定位，这样就可以随意到处寻找AR红包了。QQ上基于LBS的红包不需要实物扫描，这个与支付宝的LBS红包策略不一样，所以只需要定位到红包地点即可领取。其实支付宝刚出来扫描红包时是可以用PS破解的，现在支付宝这个BUG已经被修复了。下面三张">
+<meta property="og:description" content="本文首发于 http://littleRich.top，原文地址：http://littlerich.top/2017/01/17/%E5%9F%BA%E4%BA%8EXposed%E6%A1%86%E6%9E%B6Hook%E5%AE%9A%E4%BD%8D%E5%8A%9F%E8%83%BD%E6%9D%A5%E7%A0%B4%E8%A7%A3QQ%E7%9A%84LBS%E7%BA%A2%E">
 <meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170117/location_beijing.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170117/location_hangzhou.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170117/location_chengdu.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170117/set_as.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170117/multi_dex.png">
-<meta property="og:updated_time" content="2017-04-28T08:06:17.410Z">
+<meta property="og:updated_time" content="2017-04-28T09:10:40.470Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于Xposed框架Hook定位功能来破解QQ的LBS红包">
-<meta name="twitter:description" content="摘要:&amp;emsp;&amp;emsp;今年的LBS+AR红包无疑是过年的一大热点。刚好最近在研究利用Xposed框架Hook抢群红包的外挂，就试试利用Hook技术来实现虚拟定位，这样就可以随意到处寻找AR红包了。QQ上基于LBS的红包不需要实物扫描，这个与支付宝的LBS红包策略不一样，所以只需要定位到红包地点即可领取。其实支付宝刚出来扫描红包时是可以用PS破解的，现在支付宝这个BUG已经被修复了。下面三张">
+<meta name="twitter:description" content="本文首发于 http://littleRich.top，原文地址：http://littlerich.top/2017/01/17/%E5%9F%BA%E4%BA%8EXposed%E6%A1%86%E6%9E%B6Hook%E5%AE%9A%E4%BD%8D%E5%8A%9F%E8%83%BD%E6%9D%A5%E7%A0%B4%E8%A7%A3QQ%E7%9A%84LBS%E7%BA%A2%E">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/littleRich/littleRich.github.io/master/images/20170117/location_beijing.png">
   
     <link rel="alternative" href="/atom.xml" title="许庆富的小黑屋" type="application/atom+xml">
@@ -225,13 +225,13 @@
       
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hook进阶/">Hook进阶</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/逆向分析/">逆向分析</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hook进阶/">Hook进阶</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Xposed插件开发/">Xposed插件开发</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Xposed教程/">Xposed教程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/虚拟定位/">虚拟定位</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/逆向分析/">逆向分析</a></li></ul>
 	</div>
 
       
 	<div class="article-category tagcloud">
 	<i class="icon-price-tags"></i>
-	<a class="article-category-link" href="/categories/Xposed插件开发/">Xposed插件开发</a><a class="article-category-link" href="/categories/Xposed插件开发/虚拟定位/">虚拟定位</a><a class="article-category-link" href="/categories/Xposed插件开发/虚拟定位/Xposed教程/">Xposed教程</a>
+	<a class="article-category-link" href="/categories/Android安全/">Android安全</a>
 	</div>
 
 
@@ -349,7 +349,7 @@
     
     	<section class="tools-section tools-section-tag">
     			<div class="widget tagcloud" id="js-tagcloud">
-    				<a href="/tags/Android源码编译/" style="font-size: 10px;">Android源码编译</a> <a href="/tags/Android逆向分析/" style="font-size: 10px;">Android逆向分析</a> <a href="/tags/Git之旅/" style="font-size: 20px;">Git之旅</a> <a href="/tags/Hook进阶/" style="font-size: 10px;">Hook进阶</a> <a href="/tags/Smali语法/" style="font-size: 10px;">Smali语法</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/octopress/" style="font-size: 10px;">octopress</a> <a href="/tags/源码审计/" style="font-size: 10px;">源码审计</a> <a href="/tags/自动化开源库/" style="font-size: 10px;">自动化开源库</a> <a href="/tags/逆向分析/" style="font-size: 10px;">逆向分析</a>
+    				<a href="/tags/Android源码编译/" style="font-size: 10px;">Android源码编译</a> <a href="/tags/Android逆向分析/" style="font-size: 10px;">Android逆向分析</a> <a href="/tags/Git之旅/" style="font-size: 20px;">Git之旅</a> <a href="/tags/Hook进阶/" style="font-size: 10px;">Hook进阶</a> <a href="/tags/Smali语法/" style="font-size: 10px;">Smali语法</a> <a href="/tags/Xposed插件开发/" style="font-size: 10px;">Xposed插件开发</a> <a href="/tags/Xposed教程/" style="font-size: 10px;">Xposed教程</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/octopress/" style="font-size: 10px;">octopress</a> <a href="/tags/源码审计/" style="font-size: 10px;">源码审计</a> <a href="/tags/自动化开源库/" style="font-size: 10px;">自动化开源库</a> <a href="/tags/虚拟定位/" style="font-size: 10px;">虚拟定位</a> <a href="/tags/逆向分析/" style="font-size: 10px;">逆向分析</a>
     			</div>
     	</section>
     
