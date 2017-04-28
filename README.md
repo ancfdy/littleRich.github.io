@@ -28,10 +28,19 @@
 
 本文所使用的环境：
 
-* Windows8.1
-* node.js@5.5.0
+* os: Windows_NT 10.0.14393 win32 x64
+* node: 4.6.1
 * git@1.9.2
 * hexo@3.2.2
+* hexo-cli: 1.0.2
+* http_parser: 2.7.0
+* v8: 4.5.103.37
+* uv: 1.9.1
+* zlib: 1.2.8
+* ares: 1.10.1-DEV
+* icu: 56.1
+* modules: 46
+* openssl: 1.0.2j
 
 # 搭建github博客
 
